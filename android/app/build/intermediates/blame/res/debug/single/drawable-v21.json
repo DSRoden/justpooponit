@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/dsroden/Documents/CODE/audioTester/android/app/build/intermediates/res/merged/debug/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/dsroden/.android/build-cache/256fb8238ddb7a592d9313b844cd3b5d98652c0e/output/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/dsroden/Documents/CODE/audioTester/android/app/build/intermediates/res/merged/debug/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/dsroden/.android/build-cache/256fb8238ddb7a592d9313b844cd3b5d98652c0e/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    }
+]
