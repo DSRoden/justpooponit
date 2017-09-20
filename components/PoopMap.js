@@ -34,7 +34,8 @@ export default class PoopMap extends Component {
       newMarker: false,
       hideButtons: true,
       modalVisible: false,
-      comment: null
+      comment: null,
+      comments: null
     };
   }
 
@@ -195,6 +196,9 @@ export default class PoopMap extends Component {
     var $this = this;
     console.log('modal lcicked');
     var visible = $this.state.modalVisible;
+    if(!visible){
+      $this.setState({hideButtons: true})
+    }
     $this.setState({modalVisible: !visible});
   }
 
@@ -346,13 +350,7 @@ export default class PoopMap extends Component {
         <View>
           <View style={styles.btnsContainer}>
             <View></View>
-             <TouchableOpacity onPress={$this.poopOnIt.bind($this)} style={{
-                 alignItems:'center',
-                 justifyContent:'center',
-                 height:60,
-                 backgroundColor:'black',
-                 borderRadius: 10
-                }}>
+             <TouchableOpacity onPress={$this.poopOnIt.bind($this)} style={styles.poopOnItBtn}>
                 <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.poopOnIt.bind($this)}>
                     <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Poop On It</Text>
                 </Icon.Button>
@@ -436,10 +434,12 @@ export default class PoopMap extends Component {
                   </Icon.Button>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.modalOption}>
-                  <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.setModalVisible.bind($this)} >
-                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Back to pooping</Text>
-                  </Icon.Button>
+                <TouchableOpacity style={styles.backToPooping} onPress={$this.setModalVisible.bind($this)}>
+                  <View style={styles.poopOnItBtn}>
+                    <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.setModalVisible.bind($this)} >
+                        <Text style={{color: 'white'}}>Back to pooping</Text>
+                    </Icon.Button>
+                  </View>
                 </TouchableOpacity>
 
               </View>
@@ -631,6 +631,21 @@ const styles = StyleSheet.create({
     height: undefined,
     width: '100%',
     backgroundColor:'black'
+  },
+  backToPooping: {
+    flex: 6,
+    alignItems:'center',
+    justifyContent:'center',
+    height: undefined,
+    width: '100%',
+    backgroundColor:'transparent'
+  },
+  poopOnItBtn: {
+   alignItems:'center',
+   justifyContent:'center',
+   height:60,
+   backgroundColor:'black',
+   borderRadius: 10
   }
 });
 
