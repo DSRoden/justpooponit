@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput} from 'react-native';
+import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -31,7 +31,8 @@ export default class PoopMap extends Component {
       searchPredictions: false,
       markers: [],
       newMarker: false,
-      hideButtons: false
+      hideButtons: false,
+      modalVisible: false
     };
   }
 
@@ -93,7 +94,7 @@ export default class PoopMap extends Component {
     var marker = {location:{latitude: latitude, longitude: longitude}};
     marker.name = $this.state.place.name;
     markerArray.push(marker);
-    $this.setState({markers: markerArray})
+    $this.setState({markers: markerArray, modalVisible: true})
   }
 
 
@@ -183,6 +184,13 @@ export default class PoopMap extends Component {
     gFetch('locations',{coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
       $this.setState({places: json.results, place: json.results[0]})
     });
+  }
+
+  setModalVisible() {
+    var $this = this;
+    console.log('modal lcicked');
+    var visible = $this.state.modalVisible;
+    $this.setState({modalVisible: !visible});
   }
 
   render() {
@@ -295,7 +303,7 @@ export default class PoopMap extends Component {
 
     //POOP ON IT and SEARCH BUTTONS
     var Buttons;
-    if(!$this.state.hideButtons){
+    if(!$this.state.hideButtons && !$this.state.modalVisible){
       Buttons = (
         <View>
           <View style={styles.btnsContainer}>
@@ -340,6 +348,71 @@ export default class PoopMap extends Component {
       )
     }
 
+    var ReviewModal;
+    if($this.state.modalVisible){
+      ReviewModal = (
+        <View>
+          <Modal
+              animationType="slide"
+              transparent={true}
+              visible={$this.state.modalVisible}
+              onRequestClose={() => {alert("Modal has been closed.")}}
+              >
+              <View style={{
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', margin: 20, backgroundColor: 'black', padding: 10, color: 'white'}}>You just pooped on it!</Text>
+               
+                <TouchableOpacity style={{
+                   alignItems:'center',
+                   justifyContent:'center',
+                   height:60,
+                   backgroundColor:'black',
+                   borderRadius: 10,
+                   marginTop: 10
+                  }}>
+                  <Icon.Button name="share" backgroundColor="transparent" >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Tell the world</Text>
+                  </Icon.Button>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={{
+                   alignItems:'center',
+                   justifyContent:'center',
+                   height:60,
+                   backgroundColor:'black',
+                   borderRadius: 10,
+                   marginTop: 10
+                  }}>
+                  <Icon.Button name="message-plus" backgroundColor="transparent" >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Add a comment</Text>
+                  </Icon.Button>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{
+                   alignItems:'center',
+                   justifyContent:'center',
+                   height:60,
+                   backgroundColor:'black',
+                   borderRadius: 10,
+                   marginTop: 10
+                  }}>
+                  <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.setModalVisible.bind($this)} >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Keep pooping</Text>
+                  </Icon.Button>
+                </TouchableOpacity>
+
+              </View>
+            </Modal>
+        </View>
+      )
+    } else {
+      ReviewModal = (<View></View>)
+    }
+   
     //MAIN VIEW rendered after geolocation
     var Main;
     if($this.state && $this.state.region){
@@ -362,6 +435,7 @@ export default class PoopMap extends Component {
           {nearbyPlaces}
           {searchPredictions}
           {Buttons}
+          {ReviewModal}
         </View>
       )
     } else {
