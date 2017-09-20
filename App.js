@@ -20,13 +20,13 @@ import ButtonBasics from './components/ButtonBasics.js'
 import Touchables from './components/Touchables.js'
 import Movies from './components/Fetch.js'
 import Map from './components/GMap.js'
-import PoopBtn from './components/PoopOnIt.js'
+import PoopMap from './components/PoopMap.js'
 
 export default class App extends React.Component {
   render() {
     return (
       <View>
-        <Map />
+        <PoopMap />
       </View>
     );
   }
