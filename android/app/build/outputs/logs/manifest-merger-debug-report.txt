@@ -1,0 +1,163 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:1:1-41:12
+	package
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:2:5-30
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:4:5-30
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:3:5-28
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:6:5-67
+MERGED from [com.google.android.gms:play-services-gcm:10.2.4] /Users/dsroden/.android/build-cache/1a079abb86a950da44f9290838da0ac92b03bbfb/output/AndroidManifest.xml:21:5-66
+MERGED from [com.google.android.gms:play-services-iid:10.2.4] /Users/dsroden/.android/build-cache/b6501e8302534748bda34213aafc5fb2285303ed/output/AndroidManifest.xml:21:5-66
+MERGED from [audioTester:react-native-maps:unspecified] /Users/dsroden/Documents/CODE/audioTester/node_modules/react-native-maps/lib/android/build/intermediates/bundles/default/AndroidManifest.xml:9:5-67
+MERGED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:20:5-66
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:7:5-77
+MERGED from [com.facebook.react:react-native:0.45.1] /Users/dsroden/.android/build-cache/000c1531b46513458346e45156cd4df8e2d3b8f8/output/AndroidManifest.xml:11:5-78
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:7:22-75
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:8:5-78
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:8:22-76
+uses-permission#android.permission.BLUETOOTH
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:10:5-67
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:10:22-65
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:11:5-74
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:11:22-72
+uses-sdk
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:13:5-15:41
+MERGED from [audioTester:react-native-device-info:unspecified] /Users/dsroden/Documents/CODE/audioTester/node_modules/react-native-device-info/android/build/intermediates/bundles/default/AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.gms:play-services-gcm:10.2.4] /Users/dsroden/.android/build-cache/1a079abb86a950da44f9290838da0ac92b03bbfb/output/AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-iid:10.2.4] /Users/dsroden/.android/build-cache/b6501e8302534748bda34213aafc5fb2285303ed/output/AndroidManifest.xml:17:5-43
+MERGED from [audioTester:react-native-maps:unspecified] /Users/dsroden/Documents/CODE/audioTester/node_modules/react-native-maps/lib/android/build/intermediates/bundles/default/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:23:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.4] /Users/dsroden/.android/build-cache/d584d5edfce7ef69e85e45647ee14cebca422cfc/output/AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.4] /Users/dsroden/.android/build-cache/1c962788f530e0b9c96aa4f1377ea5a4933290b9/output/AndroidManifest.xml:17:5-43
+MERGED from [com.facebook.react:react-native:0.45.1] /Users/dsroden/.android/build-cache/000c1531b46513458346e45156cd4df8e2d3b8f8/output/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/dsroden/.android/build-cache/256fb8238ddb7a592d9313b844cd3b5d98652c0e/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:24.0.0] /Users/dsroden/.android/build-cache/bf669cfc3a0cbe7bc1c012671373532dd6305779/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] /Users/dsroden/.android/build-cache/536402ed7b73065a888940f791690450cd65babf/output/AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:1.0.1] /Users/dsroden/.android/build-cache/d775628b45d2acf01510bc4deb8d0c70bbd74728/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:1.0.1] /Users/dsroden/.android/build-cache/8c73a370be38cb870e49cea9abda39183ebf9176/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.0.1] /Users/dsroden/.android/build-cache/b254f482ca42b5838d8a760eb8041a053d33598c/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:1.0.1] /Users/dsroden/.android/build-cache/fa95d0010a681c9c3be235a66ab9a3039de3e58a/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:1.0.1] /Users/dsroden/.android/build-cache/9960a7998603609b55750eb90cdb64459c509fa9/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:1.0.1] /Users/dsroden/.android/build-cache/1ee71d95b6ecff1635283b8fa18e4dcf73602d43/output/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/dsroden/.android/build-cache/6032d08c21888cb86c34124f485fc858eb1820ed/output/AndroidManifest.xml:2:3-70
+	tools:overrideLibrary
+		ADDED from [com.android.support:support-v4:24.0.0] /Users/dsroden/.android/build-cache/bf669cfc3a0cbe7bc1c012671373532dd6305779/output/AndroidManifest.xml:23:9-51
+	android:targetSdkVersion
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:15:9-38
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:14:9-35
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml
+application
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:17:5-39:19
+MERGED from [com.google.android.gms:play-services-gcm:10.2.4] /Users/dsroden/.android/build-cache/1a079abb86a950da44f9290838da0ac92b03bbfb/output/AndroidManifest.xml:23:5-19
+MERGED from [com.google.android.gms:play-services-iid:10.2.4] /Users/dsroden/.android/build-cache/b6501e8302534748bda34213aafc5fb2285303ed/output/AndroidManifest.xml:23:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.4] /Users/dsroden/.android/build-cache/d584d5edfce7ef69e85e45647ee14cebca422cfc/output/AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.4] /Users/dsroden/.android/build-cache/1c962788f530e0b9c96aa4f1377ea5a4933290b9/output/AndroidManifest.xml:19:5-21:19
+MERGED from [com.facebook.react:react-native:0.45.1] /Users/dsroden/.android/build-cache/000c1531b46513458346e45156cd4df8e2d3b8f8/output/AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:23.0.1] /Users/dsroden/.android/build-cache/256fb8238ddb7a592d9313b844cd3b5d98652c0e/output/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:24.0.0] /Users/dsroden/.android/build-cache/bf669cfc3a0cbe7bc1c012671373532dd6305779/output/AndroidManifest.xml:25:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] /Users/dsroden/.android/build-cache/6032d08c21888cb86c34124f485fc858eb1820ed/output/AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] /Users/dsroden/.android/build-cache/65bc7369eea71fe281656f2db3dcfbb5f8359dfa/output/AndroidManifest.xml:2:3-17
+	android:label
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:21:7-39
+	android:allowBackup
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:20:7-33
+	android:icon
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:22:7-41
+	android:theme
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:23:7-38
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:19:7-38
+activity#com.audiotester.MainActivity
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:25:7-34:18
+	android:label
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:27:9-41
+	android:windowSoftInputMode
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:29:9-51
+	android:configChanges
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:28:9-79
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:26:9-37
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:30:9-33:25
+action#android.intent.action.MAIN
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:31:13-65
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:31:21-62
+category#android.intent.category.LAUNCHER
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:32:13-73
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:32:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:35:7-84
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:35:17-81
+meta-data#com.google.android.geo.API_KEY
+ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:36:9-38:70
+	android:value
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:38:13-68
+	android:name
+		ADDED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:37:13-58
+uses-permission#com.google.android.c2dm.permission.RECEIVE
+ADDED from [com.google.android.gms:play-services-gcm:10.2.4] /Users/dsroden/.android/build-cache/1a079abb86a950da44f9290838da0ac92b03bbfb/output/AndroidManifest.xml:20:5-81
+MERGED from [com.google.android.gms:play-services-iid:10.2.4] /Users/dsroden/.android/build-cache/b6501e8302534748bda34213aafc5fb2285303ed/output/AndroidManifest.xml:20:5-81
+	android:name
+		ADDED from [com.google.android.gms:play-services-gcm:10.2.4] /Users/dsroden/.android/build-cache/1a079abb86a950da44f9290838da0ac92b03bbfb/output/AndroidManifest.xml:20:22-79
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from [audioTester:react-native-maps:unspecified] /Users/dsroden/Documents/CODE/audioTester/node_modules/react-native-maps/lib/android/build/intermediates/bundles/default/AndroidManifest.xml:10:5-81
+	android:name
+		ADDED from [audioTester:react-native-maps:unspecified] /Users/dsroden/Documents/CODE/audioTester/node_modules/react-native-maps/lib/android/build/intermediates/bundles/default/AndroidManifest.xml:10:22-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:19:5-78
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:19:22-76
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:21:5-77
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:21:19-51
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:10.2.4] /Users/dsroden/.android/build-cache/96b08462817f8ffe867b9cff18ad585046dbb4a8/output/AndroidManifest.xml:21:52-75
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:19:9-172
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:19:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:19:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:10.2.4] /Users/dsroden/.android/build-cache/58a3fabb212da4e14cc763200dededfcff0ca48c/output/AndroidManifest.xml:19:19-85
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:10.2.4] /Users/dsroden/.android/build-cache/1c962788f530e0b9c96aa4f1377ea5a4933290b9/output/AndroidManifest.xml:20:9-121
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:10.2.4] /Users/dsroden/.android/build-cache/1c962788f530e0b9c96aa4f1377ea5a4933290b9/output/AndroidManifest.xml:20:66-119
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:10.2.4] /Users/dsroden/.android/build-cache/1c962788f530e0b9c96aa4f1377ea5a4933290b9/output/AndroidManifest.xml:20:20-65
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+IMPLIED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:1:1-41:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from /Users/dsroden/Documents/CODE/audioTester/android/app/src/main/AndroidManifest.xml:1:1-41:12 reason: org.webkit.android_jsc requested WRITE_EXTERNAL_STORAGE

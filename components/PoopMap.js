@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput, Modal} from 'react-native';
+import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput, Modal, Share} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -17,6 +17,7 @@ const G_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
 const G_Search_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?';
 const G_Place_URL = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=';
 
+const DeviceInfo = require('react-native-device-info');
 
 
 export default class PoopMap extends Component {
@@ -31,13 +32,17 @@ export default class PoopMap extends Component {
       searchPredictions: false,
       markers: [],
       newMarker: false,
-      hideButtons: false,
-      modalVisible: false
+      hideButtons: true,
+      modalVisible: false,
+      comment: null
     };
   }
 
   componentDidMount() {
     $this = this;
+
+    //get device info
+     console.log("Device Unique ID", DeviceInfo.getUniqueID()); 
     //current position
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -56,7 +61,7 @@ export default class PoopMap extends Component {
             console.log('INITIAL LAT LNG', lat, lng);
             gFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
                 //set nearby places and top result
-                $this.setState({places: json.results, place: json.results[0]})
+                $this.setState({places: json.results, place: json.results[0], hideButtons: false, newMarker: true})
             });
         });
       },
@@ -193,18 +198,47 @@ export default class PoopMap extends Component {
     $this.setState({modalVisible: !visible});
   }
 
+  commentInput(text){
+    var $this = this;
+    console.log('comment input>>>', text);
+    $this.setState({comment: text}); 
+  }
+
+  submitComment(){
+    var $this = this;
+    console.log($this.state.comment);
+  }
+
+  share(){
+    Share.share({
+      message: 'BAM: we\'re helping your business with awesome React Native apps',
+      url: 'http://bam.tech',
+      title: 'Wow, did you see that?'
+    }, {
+      // Android only:
+      dialogTitle: 'Share BAM goodness',
+      // iOS only:
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter'
+      ]
+    })
+  }
   render() {
     var $this = this;
     //main place
     if($this.state.place && !$this.state.showSearch){
       Place = (
         <View style={styles.placeContainer}>
-          <Image source={{uri: (G_Photo_URL + $this.state.place.photos[0].photo_reference + '&key=' + G_KEY)}} style={{flex: 3, height: undefined, width: undefined}}/>
-          <View style={{flex: 3, height: undefined, width: undefined, padding: 30}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>{($this.state.place.name.length > 20) ? ($this.state.place.name.slice(0, 20) + '...') : $this.state.place.name}</Text>
-            <Text style={{color: 'white',  textAlign: 'center'}}>stink rating 6</Text>
+          <View style={{flex: 2, height: undefined, width: undefined, padding: 10}}>
+            <Image source={{uri: (($this.state.place.photos && $this.state.place.photos[0]) ? (G_Photo_URL + $this.state.place.photos[0].photo_reference + '&key=' + G_KEY) : ('https://image.freepik.com/free-icon/instagram-photo-camera-logo-outline_318-56004.jpg'))}} style={{flex: 1, height: undefined, width: undefined, borderRadius: 100}}/>
           </View>
-          <View style={{flex: 3, height: undefined, width: undefined, backgroundColor: 'gray'}}></View>
+          <View style={{flex: 3, height: undefined, width: undefined, justifyContent: 'center', flexDirection: 'column'}}>
+            <Text style={{color: 'white', fontSize: 20}}>{($this.state.place.name.length > 20) ? ($this.state.place.name.slice(0, 20) + '...') : $this.state.place.name}</Text>
+          </View>
+          <View style={{flex: 3, justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: undefined, width: undefined, backgroundColor: 'black'}}>
+            <Image source={{uri: (G_Photo_URL + $this.state.place.photos[0].photo_reference + '&key=' + G_KEY)}} style={{flex: 3, height: undefined, width: undefined}}/>
+            <Text style={{ flex: 2, color: 'white',  textAlign: 'center'}}>stink rating 6</Text>
+          </View>
         </View>
       )
     } else {
@@ -236,14 +270,18 @@ export default class PoopMap extends Component {
     var nearbyPlaces;
     if($this.state.places && $this.state.showNearPlaces && !$this.state.showSearchPredictions){
       var nPlaces = $this.state.places.map( place =>
-        <TouchableHighlight style={styles.placeInScroll} onPress={$this.selectNearbyPlace.bind($this,place)} key={place.id}>
+        <TouchableHighlight onPress={$this.selectNearbyPlace.bind($this,place)} key={place.id}>
           <View style={styles.placeInScroll}>
-            <Image source={{uri: ((place.photos && place.photos[0]) ? (G_Photo_URL + place.photos[0].photo_reference + '&key=' + G_KEY) : ('https://image.freepik.com/free-icon/instagram-photo-camera-logo-outline_318-56004.jpg'))}} style={{flex: 3, height: undefined, width: undefined}}/>
-            <View style={{flex: 3, height: undefined, width: undefined, padding: 30}}>
-              <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>{(place.name.length > 20) ? (place.name.slice(0, 20) + '...') : place.name}</Text>
-              <Text style={{color: 'white',  textAlign: 'center'}}>stink rating 6</Text>
+            <View style={{flex: 2, height: undefined, width: undefined, padding: 10}}>
+              <Image source={{uri: ((place.photos && place.photos[0]) ? (G_Photo_URL + place.photos[0].photo_reference + '&key=' + G_KEY) : ('https://image.freepik.com/free-icon/instagram-photo-camera-logo-outline_318-56004.jpg'))}} style={{flex: 1, height: undefined, width: undefined, borderRadius: 100}}/>
             </View>
-            <View style={{flex: 3, height: undefined, width: undefined, backgroundColor: 'gray'}}></View>
+            <View style={{flex: 3, height: undefined, width: undefined, justifyContent: 'center', flexDirection: 'column'}}>
+              <Text style={{color: 'white', fontSize: 20}}>{(place.name.length > 20) ? (place.name.slice(0, 20) + '...') : place.name}</Text>
+            </View>
+            <View style={{flex: 3, justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: undefined, width: undefined, backgroundColor: 'black'}}>
+              <Image source={{uri: ((place.photos && place.photos[0]) ? (G_Photo_URL + place.photos[0].photo_reference + '&key=' + G_KEY) : ('https://image.freepik.com/free-icon/instagram-photo-camera-logo-outline_318-56004.jpg'))}} style={{flex: 3, height: undefined, width: undefined}}/>
+              <Text style={{ flex: 2, color: 'white',  textAlign: 'center'}}>stink rating 6</Text>
+            </View>
           </View>
         </TouchableHighlight>
         );
@@ -289,7 +327,7 @@ export default class PoopMap extends Component {
         <MapView.Marker
         coordinate={ m.location}
         onPress={e => $this.showMarker(e.nativeEvent)}
-        key={m.location.latitude}
+        key={(m.location.latitude * Math.random())}
         title={m.name}
         image={require('../assets/poop.png')}
         >
@@ -330,10 +368,10 @@ export default class PoopMap extends Component {
             <TouchableOpacity onPress={$this._showNearbyPlaces.bind($this)} style={{
                alignItems:'center',
                justifyContent:'center',
-               width:50,
-               height:50,
+               width: 50,
+               height: 50,
                backgroundColor:'black',
-               borderRadius:100,
+               borderRadius: 10,
                paddingLeft: 7
             }}> 
               <Icon.Button name="magnify" backgroundColor="transparent" onPress={$this._showNearbyPlaces.bind($this)}>
@@ -363,45 +401,44 @@ export default class PoopMap extends Component {
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  backgroundColor: 'rgba(255,255,255,0.5)'
                 }}>
-                <Text style={{fontSize: 20, fontWeight: 'bold', margin: 20, backgroundColor: 'black', padding: 10, color: 'white'}}>You just pooped on it!</Text>
-               
-                <TouchableOpacity style={{
-                   alignItems:'center',
-                   justifyContent:'center',
-                   height:60,
-                   backgroundColor:'black',
-                   borderRadius: 10,
-                   marginTop: 10
-                  }}>
-                  <Icon.Button name="share" backgroundColor="transparent" >
-                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Tell the world</Text>
+
+                <View style={styles.modalOption}>
+                  <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold', backgroundColor: 'black', color: 'white'}}>You just pooped on {$this.state.place.name}</Text>                
+                </View>
+
+                <View style={{flex: 6, backgroundColor: 'lightgray', width: '100%'}}>
+                  <TextInput
+                  style={{color: 'black', height: '100%', padding: 20}}
+                  placeholder="Tell the world why you pooped on it..."
+                  onChangeText={$this.commentInput.bind($this)}
+                  placeholderTextColor="white"
+                  >
+                  </TextInput>
+                </View>
+
+                <TouchableOpacity style={styles.modalOption} onPress={$this.submitComment.bind($this)}>
+                  <Icon.Button name="message-plus" backgroundColor="transparent" >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}  onPress={$this.submitComment.bind($this)}>Submit Comment</Text>
                   </Icon.Button>
                 </TouchableOpacity>
-                
-                <TouchableOpacity style={{
-                   alignItems:'center',
-                   justifyContent:'center',
-                   height:60,
-                   backgroundColor:'black',
-                   borderRadius: 10,
-                   marginTop: 10
-                  }}>
-                  <Icon.Button name="message-plus" backgroundColor="transparent" >
-                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Add a comment</Text>
+               
+                <TouchableOpacity style={styles.modalOption} onPress={$this.share.bind($this)}>
+                  <Icon.Button name="share" backgroundColor="transparent" >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}} onPress={$this.share.bind($this)}>Share this poop</Text>
                   </Icon.Button>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{
-                   alignItems:'center',
-                   justifyContent:'center',
-                   height:60,
-                   backgroundColor:'black',
-                   borderRadius: 10,
-                   marginTop: 10
-                  }}>
+                <TouchableOpacity style={styles.modalOption}>
+                  <Icon.Button name="restore" backgroundColor="transparent" >
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Cancel Poop</Text>
+                  </Icon.Button>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.modalOption}>
                   <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.setModalVisible.bind($this)} >
-                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Keep pooping</Text>
+                      <Text style={{fontFamily: 'Arial', fontSize: 15, color: 'white', textAlign: 'center'}}>Back to pooping</Text>
                   </Icon.Button>
                 </TouchableOpacity>
 
@@ -422,8 +459,8 @@ export default class PoopMap extends Component {
               provider={ PROVIDER_GOOGLE }
               style={ styles.container }
               showsUserLocation={ true }
-              region={ this.state.region }
-              onPress={this._closeLocations.bind(this)}
+              region={$this.state.region }
+              onPress={$this._closeLocations.bind($this)}
               // onRegionChange={ region => this.setState({region}) }
               // onRegionChangeComplete={ region => this.setState({region}) }
           >
@@ -578,13 +615,22 @@ const styles = StyleSheet.create({
   placesScroll: {
     flex: 1,
     backgroundColor: 'white',
-    maxHeight: 200
+    maxHeight: 300
   },
   placeInScroll: {
     flex: 1,
+    height: 100,
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: 'black'
+  },
+  modalOption: {
+    flex: 6,
+    alignItems:'center',
+    justifyContent:'center',
+    height: undefined,
+    width: '100%',
+    backgroundColor:'black'
   }
 });
 
