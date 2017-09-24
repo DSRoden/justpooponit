@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput, Modal, Share} from 'react-native';
+import { AppRegistry, StyleSheet, View, Text, Dimensions, Button, Alert, Image, ScrollView, TouchableHighlight, TouchableOpacity, TextInput, Modal, Share, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -7,17 +7,16 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 //WINDOW SIZE & ASPECT RATIO
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 //currently fetching images client side, but image url should be fetched and added to data via the server
 const G_Photo_URL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='
 const G_KEY = 'AIzaSyAQ1HQf-B9HQIN6IcDqIqA187xCTUFeDvc';
-const G_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-const G_Search_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?';
-const G_Place_URL = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=';
 
 const DeviceInfo = require('react-native-device-info');
+const BASE_URL = 'https://yfflunigzl.localtunnel.me/api/1';
+
 
 
 export default class PoopMap extends Component {
@@ -35,7 +34,8 @@ export default class PoopMap extends Component {
       hideButtons: true,
       modalVisible: false,
       comment: null,
-      comments: null
+      comments: null,
+      device_id: null
     };
   }
 
@@ -43,8 +43,23 @@ export default class PoopMap extends Component {
     $this = this;
 
     //get device info
-     console.log("Device Unique ID", DeviceInfo.getUniqueID()); 
-    //current position
+    var device_id = DeviceInfo.getUniqueID(); 
+    AsyncStorage.getItem('device_id', (err, result)=>{
+      if(result && result === device_id){
+        // device exists and matches existing id
+        $this.setState({device_id: device_id});
+      } else if(result !== device_id){
+         pFetch('save_device', {device_id: device_id}).then((result)=>{
+          AsyncStorage.setItem('device_id', device_id, (err, result) => {
+            $this.setState({device_id: device_id});
+          });
+        });
+      } else {
+        // err getting item
+        console.log(err);
+      }
+    })
+
     navigator.geolocation.getCurrentPosition(
       position => {
         //set position
@@ -59,15 +74,15 @@ export default class PoopMap extends Component {
             //SEARCH FOR PLACES NEARBY (currently seraching by type restaurant)
             var lat = $this.state.region.latitude;
             var lng =  $this.state.region.longitude;
-            console.log('INITIAL LAT LNG', lat, lng);
-            gFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
-                //set nearby places and top result
-                $this.setState({places: json.results, place: json.results[0], hideButtons: false, newMarker: true})
-            });
+            pFetch('places_nearby', {longitude: lng, latitude: lat}).then((dbPoops)=>{
+              pFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
+                  $this.setState({places: json.results, place: json.results[0], hideButtons: false, markers: dbPoops, newMarker: true})
+              }); 
+            })
         });
       },
     (error) => console.log(error.message),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
 
 
@@ -94,13 +109,19 @@ export default class PoopMap extends Component {
     var $this = this;
 
     //create poop marker and add it to marker array
-    var markerArray = $this.state.markers;
-    var latitude = $this.state.place.geometry.location.lat;
-    var longitude = $this.state.place.geometry.location.lng;
-    var marker = {location:{latitude: latitude, longitude: longitude}};
-    marker.name = $this.state.place.name;
-    markerArray.push(marker);
-    $this.setState({markers: markerArray, modalVisible: true})
+    var place = $this.state.place;
+    var device_id = $this.state.device_id;
+    if(!device_id){
+      return;
+    }
+
+    pFetch('save_poop', {place: place, device_id: device_id}).then((result)=>{
+      var place = result.place;
+      place.jpoi_place_id = result.place_id;
+      place.poop_id = result._id;
+      place.pooper_id = result.pooper_id;
+      $this.setState({place: place, modalVisible: true});
+    });
   }
 
 
@@ -120,9 +141,7 @@ export default class PoopMap extends Component {
     }, function(){
       var lat = $this.state.region.latitude;
       var lng =  $this.state.region.longitude;
-      // var latLng = lat + ',' + lng;
-      // var url = G_URL + 'location='+ latLng +'&radius=500&sensor=false&key=' + G_KEY;
-      gFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
+      pFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
         $this.setState({places: json.results, place: val, newMarker: true})
       });
     });
@@ -147,7 +166,7 @@ export default class PoopMap extends Component {
 
   autocompleteSearch(text){
     var $this = this;
-    gFetch('autocomplete', {text: text}).then((result)=>{
+    pFetch('autocomplete', {text: text}).then((result)=>{
       $this.setState({searchPredictions: result.predictions, showSearchPredictions: true})
     }); 
   }
@@ -155,7 +174,7 @@ export default class PoopMap extends Component {
   selectSearch(place){
     var $this = this;
     place.name = place.description
-    gFetch('place_id', {place_id: place.place_id}).then((json)=>{
+    pFetch('place_id', {place_id: place.place_id}).then((json)=>{
       var place = json.result
       $this.setState({place: place, 
         showNearPlaces: false,
@@ -171,7 +190,7 @@ export default class PoopMap extends Component {
         //get the most likely location
         var lat = $this.state.region.latitude;
         var lng =  $this.state.region.longitude;
-        gFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
+        pFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
           $this.setState({places: json.results, newMarker: true})
         });
       });
@@ -184,17 +203,29 @@ export default class PoopMap extends Component {
   }
 
 
-  showMarker(val){
-    var lat = $this.state.region.latitude;
-    var lng =  $this.state.region.longitude;
-    gFetch('locations',{coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
-      $this.setState({places: json.results, place: json.results[0]})
-    });
+  showMarker(marker){
+    var lat = marker.coordinate.latitude;
+    var lng =  marker.coordinate.longitude;
+    var place;
+    var markers = $this.state.markers;
+
+    //to find the place client side
+    for(var i = 0; i < markers.length; i++){
+      if(markers[i].place.geometry.location.lat === lat && markers[i].place.geometry.location.lng){
+        place = markers[i].place;
+      }
+    }
+    $this.setState({place: place});
+
+    // to do it through server side fetch 
+    // pFetch('select_place',{latitude: lat, longitude: lng}).then((json)=>{
+    //   console.log('select place', json);
+    //   $this.setState({place: json.place})
+    // });
   }
 
   setModalVisible() {
     var $this = this;
-    console.log('modal lcicked');
     var visible = $this.state.modalVisible;
     if(!visible){
       $this.setState({hideButtons: true})
@@ -204,13 +235,23 @@ export default class PoopMap extends Component {
 
   commentInput(text){
     var $this = this;
-    console.log('comment input>>>', text);
     $this.setState({comment: text}); 
   }
 
   submitComment(){
     var $this = this;
     console.log($this.state.comment);
+    var submitData = {poop_id: $this.state.place.poop_id, text: $this.state.comment, device_id: $this.state.device_id, pooper_id: $this.state.place.pooper_id, place_id: $this.state.place.jpoi_place_id};
+    pFetch('comment', submitData).then(()=>{
+      var lat = $this.state.place.geometry.location.lat;
+      var lng =  $this.state.place.geometry.location.lng;
+      pFetch('places_nearby', {longitude: lng, latitude: lat}).then((dbPlaces)=>{
+        pFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
+            //set nearby places and top result
+            $this.setState({places: json.results, hideButtons: false, markers: dbPlaces, modalVisible: false})
+        }); 
+      })
+    });
   }
 
   share(){
@@ -227,9 +268,21 @@ export default class PoopMap extends Component {
       ]
     })
   }
+
+  backToPooping(){
+    var lat = $this.state.place.geometry.location.lat;
+      var lng =  $this.state.place.geometry.location.lng;
+      pFetch('places_nearby', {longitude: lng, latitude: lat}).then((dbPlaces)=>{
+        pFetch('locations', {coordinates: {latitude: lat, longitude: lng}}).then((json)=>{
+            //set nearby places and top result
+            $this.setState({places: json.results, hideButtons: false, markers: dbPlaces, modalVisible: false})
+        }); 
+      })
+  }
   render() {
     var $this = this;
     //main place
+    var Place;
     if($this.state.place && !$this.state.showSearch){
       Place = (
         <View style={styles.placeContainer}>
@@ -329,11 +382,11 @@ export default class PoopMap extends Component {
     if($this.state.markers.length > 0){
       Markers = $this.state.markers.map( m =>
         <MapView.Marker
-        coordinate={ m.location}
+        coordinate={{latitude: m.place.geometry.location.lat, longitude: m.place.geometry.location.lng}}
         onPress={e => $this.showMarker(e.nativeEvent)}
-        key={(m.location.latitude * Math.random())}
-        title={m.name}
-        image={require('../assets/poop.png')}
+        key={m._id}
+        title={m.place.name}
+        // image={require('../assets/poop.png')}
         >
         </MapView.Marker>
         );
@@ -436,7 +489,7 @@ export default class PoopMap extends Component {
 
                 <TouchableOpacity style={styles.backToPooping} onPress={$this.setModalVisible.bind($this)}>
                   <View style={styles.poopOnItBtn}>
-                    <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.setModalVisible.bind($this)} >
+                    <Icon.Button name="emoticon-poop" backgroundColor="transparent" onPress={$this.backToPooping.bind($this)} >
                         <Text style={{color: 'white'}}>Back to pooping</Text>
                     </Icon.Button>
                   </View>
@@ -461,8 +514,8 @@ export default class PoopMap extends Component {
               showsUserLocation={ true }
               region={$this.state.region }
               onPress={$this._closeLocations.bind($this)}
-              // onRegionChange={ region => this.setState({region}) }
-              // onRegionChangeComplete={ region => this.setState({region}) }
+              onRegionChange={ region => this.setState({region}) }
+              onRegionChangeComplete={ region => this.setState({region}) }
           >
             {Marker}
             {Markers}
@@ -492,7 +545,8 @@ export default class PoopMap extends Component {
 //HELPER FUNCTIONS
 
 function status(response) {
-  if (response.status >= 200 && response.status < 300) {
+  console.log('response', response);
+  if(response.status >= 200 && response.status < 300) {
     return response
   }
   throw new Error(response.statusText)
@@ -502,60 +556,61 @@ function json(response) {
   return response.json()
 }
 
-//fetch data 
-function gFetch(type, data){
+
+function pFetch(type, data){
+  data.type = type;
   var url;
   switch(type){
+    case 'places_nearby':
+    url = BASE_URL + '/places/getNearby';
+    break;
+    case 'select_place':
+    url = BASE_URL + '/places/selectOne'
+    break;
+    case 'save_device':
+    url =  BASE_URL + '/devices/saveOne';
+    break;
+    case 'save_poop':
+    url = BASE_URL + '/poops/saveOne';
+    break;
     case 'locations':
-    url = G_URL + 'location='+ data.coordinates.latitude + ',' + data.coordinates.longitude +'&radius=500&sensor=false&key=' + G_KEY;
+    url = BASE_URL + '/maps/queryMaps';
     break;
     case 'place_id':
-    url = G_Place_URL + data.place_id + '&sensor=true&key=' + G_KEY;
+    url = BASE_URL + '/maps/queryMaps';
     break;
     case 'autocomplete':
-    url = G_Search_URL + 'input=' + data.text+ '&key=' + G_KEY;
+    url = BASE_URL + '/maps/queryMaps';
+    break;
+    case 'comment':
+    url = BASE_URL + '/comments/saveOne';
     break;
     default:
+    url = null;
     break;
   }
   if(!url){
     return;
   }
-
-  var prom = new Promise((res, rej)=>{
-    makeRequest(url).then((response)=>{
-      res(response);
-    });
-  })
-  prom.then((result)=>{
-    return result;
-  }).catch((err)=>{
-    console.log('gfetch failed', err);  
-  })
-  return prom;
-}
-
-function makeRequest(url){
   var prom = new Promise((res, rej)=>{
     fetch(url, {
-      method: 'get',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify(data)
     }).then(status)
       .then(json)
       .then(function(json){
         res(json)
       }).catch(function(error) {
-        console.log('request failed', error)
     });
   })
   prom.then((result)=>{
     return result;
   }).catch((err)=>{
-    console.log(err)
-  });
+  })
   return prom;
 }
 

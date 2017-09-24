@@ -172,7 +172,7 @@ export default class Map extends Component {
     console.log('display poop marker', val);
 
     var latLng = val.coordinate.latitude + ',' + val.coordinate.longitude;
-    var url = G_URL + 'location='+ latLng + '&radius=500&type=restaurant&sensor=false&key=' + G_KEY;
+    var url = G_URL + 'location='+ latLng + '&radius=500&&sensor=false&key=' + G_KEY;
     gFetch(url).then((json)=>{
       $this.setState({places: json.results, place: json.results[0]})
     });

@@ -45,3 +45,35 @@ export default class Movies extends Component {
     );
   }
 }
+
+    //get device info
+    // var device_id = DeviceInfo.getUniqueID()); 
+    // post({device_id: device_id}).then((result)=>{
+    //   console.log('result of saving device id', result);
+    // })
+
+// function post(data){
+//   var url = 'http://localhost/api/1/devices/saveOne';
+//   var prom = new Promise((res,rej)=>{
+//     fetch(url, {
+//       method: 'post',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//       },
+//       data: data
+//     }).then(status)
+//       .then(json)
+//       .then(function(json){
+//         res(json)
+//       }).catch(function(error) {
+//         console.log('request failed', error)
+//     });
+//   });
+//   prom.then((result)=>{
+//     return result;
+//   }).catch((err)=>{
+//     console.log(err);
+//   })
+//   return prom;
+// }
