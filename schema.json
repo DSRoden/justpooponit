@@ -1,0 +1,22 @@
+// poops sending
+
+{
+	"poop": 0,
+	"device_id": ["device_id", null],
+	"location_id": 12312,
+	"comment": ""
+}
+
+// locations receiving
+
+{
+	"id": 12312,
+	"name": "x marks the spot",
+	"lat" : 12,
+	"lng" : 54,
+	"stain": 1,
+	"poop_strength": 10,
+	"distance": 100, 
+	"type": [0, 1, 3]
+}
+
